@@ -500,14 +500,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // إضافة زر الاختبار إلى واجهة المستخدم عند تحميل الصفحة
-  const testButton = document.createElement("button");
-  testButton.textContent = "اختبار عشوائي";
-  testButton.className =
-    "bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-4";
-  testButton.addEventListener("click", generateRandomAnswers);
+//   const testButton = document.createElement("button");
+//   testButton.textContent = "اختبار عشوائي";
+//   testButton.className =
+//     "bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-4";
+//   testButton.addEventListener("click", generateRandomAnswers);
 
   // إضافة زر الاختبار بعد زر البدء
-  document.getElementById("intro").appendChild(testButton);
+//   document.getElementById("intro").appendChild(testButton);
 
   /**
    * عرض أسئلة فئة معينة في المودال
