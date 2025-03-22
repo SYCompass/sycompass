@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
             shareText += `${scale.name}: ${direction} (${strengthPercentage}%)\n`;
         });
         
-        shareText += "\nقم بإجراء الاختبار على: https://syriacompass.com";
+        shareText += "\nقم بإجراء الاختبار على: https://sycompass.github.io/sycompass/";
         
         // التحقق من وجود واجهة Clipboard API
         if (navigator.clipboard && navigator.clipboard.writeText) {
