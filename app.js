@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const introSection = document.getElementById("intro");
   const questionContainer = document.getElementById("question-container");
   const resultsContainer = document.getElementById("results-container");
+  const previousResultsContainer = document.getElementById("previous-results");
   const startButton = document.getElementById("start-btn");
   const prevButton = document.getElementById("prev-btn");
   const nextButton = document.getElementById("next-btn");
@@ -170,10 +171,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /**
    * حساب النتائج وعرضها
+* @param  {Object} results - نتائج المرغوب عرضها
    */
-  function showResults() {
+  function showResults(results) {
     // حساب النتائج
-    const results = calculateResults();
+    if (!results) results = calculateResults();
 
     // تحديث الرسوم البيانية
     updateResultsVisuals(results);
@@ -238,6 +240,14 @@ document.addEventListener("DOMContentLoaded", function () {
         results[scale.id] = results[scale.id] / maxValue;
       }
     });
+
+    // حفظ النتائج في التخزين المحلي
+
+    const storedResults = JSON.parse(localStorage.getItem("results")) || [];
+
+    storedResults.push({ createdAt: Date.now(), results });
+
+    localStorage.setItem("results", JSON.stringify(storedResults));
 
     return results;
   }
@@ -787,5 +797,62 @@ document.addEventListener("DOMContentLoaded", function () {
         ease: "elastic.out(1, 0.5)",
       }
     );
+  }
+
+  // اضافة عناصر الواجهة للإختبارات المسبقة
+
+  const results = JSON.parse(localStorage.getItem("results")) || [];
+
+  if (results.length > 0) {
+    previousResultsContainer.classList.remove("hidden");
+
+    const dtf = new Intl.DateTimeFormat("ar", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
+
+    // اضافة عنصر لكل نتيجة
+
+    results.forEach((result) => {
+      const date = dtf.format(new Date(result.createdAt));
+
+      const resultItem = document.createElement("li");
+      resultItem.className = "flex";
+
+      const dateEl = document.createElement("span");
+
+      dateEl.className = "flex-1 justify-end flex flex-row-reverse";
+      dateEl.textContent = date;
+
+      resultItem.appendChild(dateEl);
+
+      const viewButton = document.createElement("button");
+
+      viewButton.className =
+        "flex bg-blue-600 hover:bg-blue-800 text-white font-bold py-1 px-2 rounded-lg transition duration-300";
+
+      viewButton.textContent = "عرض النتائج";
+
+      viewButton.addEventListener("click", () => {
+        showResults(result.results);
+
+        setTimeout(() => {
+          resultsContainer.scrollIntoView({
+            behavior: "smooth",
+          });
+
+          // انتظار 400 ملي ثانية لأنميشن
+          // GSAP
+        }, 400);
+      });
+
+      resultItem.appendChild(viewButton);
+
+      const previousResultsList = document.getElementById(
+        "previous-results-list"
+      );
+
+      previousResultsList.appendChild(resultItem);
+    });
   }
 });
